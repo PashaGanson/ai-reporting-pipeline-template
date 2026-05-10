@@ -1,0 +1,33 @@
+{
+  "timezone": "+03:00",
+  "crm": {
+    "provider": "bitrix24",
+    "webhook_env": "BITRIX_WEBHOOK_URL"
+  },
+  "fields": {
+    "unqualified_flag": "UF_CRM_UNQUALIFIED",
+    "booking_manager": "UF_CRM_BOOKING_MANAGER",
+    "source_marker": "UF_CRM_SOURCE_MARKER",
+    "booking_date": "UF_CRM_BOOKING_DATE",
+    "hall": "UF_CRM_HALL",
+    "package_type": "UF_CRM_PACKAGE_TYPE",
+    "client_type": "UF_CRM_CLIENT_TYPE",
+    "event_type": "UF_CRM_EVENT_TYPE"
+  },
+  "managers": {
+    "101": "Manager A",
+    "102": "Manager B",
+    "103": "Manager C",
+    "104": "Manager D"
+  },
+  "halls": {
+    "h1": "Room 1",
+    "h2": "Room 2",
+    "h3": "Room 3",
+    "h4": "Room 4"
+  },
+  "clean_lead_statuses": ["NEW", "DETAILS", "CONVERTED", "JUNK", "BOOK_TODAY", "BOOK_WEEKDAY", "BOOK_WEEKEND", "OFF_HOURS"],
+  "active_deal_stages": ["NEW", "PROPOSAL", "PREPAY", "WON"],
+  "won_stage": "WON",
+  "returning_customer_marker": "RETURNING_CUSTOMER"
+}

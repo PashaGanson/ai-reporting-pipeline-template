@@ -1,0 +1,76 @@
+{
+  "period": {
+    "from": "2026-05-04",
+    "to": "2026-05-10"
+  },
+  "summary": {
+    "total_leads": 7,
+    "clean_leads": 7,
+    "dirty_leads": 0,
+    "active_deals": 4,
+    "won_deals": 2,
+    "revenue": 2700.0,
+    "package_deals": 3,
+    "hourly_deals": 1
+  },
+  "managers": [
+    {
+      "manager": "Manager A",
+      "clean_leads": 2,
+      "active_deals": 1,
+      "new_customer_deals": 1,
+      "won_deals": 1,
+      "revenue": 1200.0,
+      "lead_to_deal_rate": 50.0
+    },
+    {
+      "manager": "Manager B",
+      "clean_leads": 2,
+      "active_deals": 1,
+      "new_customer_deals": 1,
+      "won_deals": 0,
+      "revenue": 0,
+      "lead_to_deal_rate": 50.0
+    },
+    {
+      "manager": "Manager C",
+      "clean_leads": 1,
+      "active_deals": 1,
+      "new_customer_deals": 0,
+      "won_deals": 1,
+      "revenue": 1500.0,
+      "lead_to_deal_rate": 0.0
+    },
+    {
+      "manager": "Manager D",
+      "clean_leads": 2,
+      "active_deals": 1,
+      "new_customer_deals": 1,
+      "won_deals": 0,
+      "revenue": 0,
+      "lead_to_deal_rate": 50.0
+    }
+  ],
+  "halls": [
+    {
+      "hall": "Room 1",
+      "won_deals": 1,
+      "revenue": 1200.0
+    },
+    {
+      "hall": "Room 2",
+      "won_deals": 0,
+      "revenue": 0
+    },
+    {
+      "hall": "Room 3",
+      "won_deals": 1,
+      "revenue": 1500.0
+    },
+    {
+      "hall": "Room 4",
+      "won_deals": 0,
+      "revenue": 0
+    }
+  ]
+}
