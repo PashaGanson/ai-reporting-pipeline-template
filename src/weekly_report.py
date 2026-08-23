@@ -171,7 +171,9 @@ def build_report(config: dict, period: Period, leads: list[dict], deals: list[di
 
 def write_outputs(report: dict) -> None:
     OUT_DIR.mkdir(exist_ok=True)
-    (OUT_DIR / "weekly_report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+    (OUT_DIR / "weekly_report.json").write_text(
+        json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8", newline="\n"
+    )
     lines = [
         f"# Weekly Business Report: {report['period']['from']} — {report['period']['to']}",
         "",
@@ -185,7 +187,9 @@ def write_outputs(report: dict) -> None:
     lines += ["", "## Halls / Rooms"]
     for row in report["halls"]:
         lines.append(f"- **{row['hall']}**: {row['won_deals']} wins, ${row['revenue']:.0f} revenue")
-    (OUT_DIR / "weekly_report.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    (OUT_DIR / "weekly_report.md").write_text(
+        "\n".join(lines) + "\n", encoding="utf-8", newline="\n"
+    )
 
 
 def main() -> None:

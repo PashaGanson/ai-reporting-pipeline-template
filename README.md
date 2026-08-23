@@ -34,10 +34,14 @@ The original private workflow pulls data from Bitrix24, calculates manager / roo
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+python -m pip install --require-hashes -r requirements.txt
 python src/weekly_report.py --sample-data sample_data --week 2026-05-04 2026-05-10
 python src/report_snapshot.py
 ```
+
+The supported reproducibility contract is CPython 3.12/3.13 on Windows x86_64
+and Ubuntu x86_64. The pinned Pillow wheels and canonical PNG encoder make the
+sample snapshot byte-identical across that matrix.
 
 Outputs:
 
@@ -57,6 +61,13 @@ sample_data/deals.json
 ```
 
 or adapt `config/report_config.example.json` to your CRM field names.
+
+## Public-synthetic boundary
+
+The committed sample inputs and outputs are synthetic aggregates only. The
+sample path never contacts a CRM; the live Bitrix read path is entered only
+when a user deliberately supplies `BITRIX_WEBHOOK_URL`. Do not commit exports,
+webhooks, client names, phone numbers, emails, chats, or call content.
 
 For Bitrix24, set:
 
