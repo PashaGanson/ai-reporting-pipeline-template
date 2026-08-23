@@ -37,7 +37,7 @@ jobs:
       - run: python src/report_snapshot.py
       - run: git diff --exit-code -- out docs/assets/weekly-report-snapshot.png
       - run: python scripts/artifact_digest.py --artifact docs/assets/weekly-report-snapshot.png --output ci-artifact-digest-${{ matrix.os }}-${{ matrix.python }}.txt
-      - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: artifact-digest-${{ matrix.os }}-${{ matrix.python }}
           path: ci-artifact-digest-${{ matrix.os }}-${{ matrix.python }}.txt
@@ -47,7 +47,7 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+      - uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
         with:
           pattern: artifact-digest-*
           merge-multiple: true
