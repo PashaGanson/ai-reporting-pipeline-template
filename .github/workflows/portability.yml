@@ -1,0 +1,77 @@
+name: portability
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: ${{ matrix.os }} Python ${{ matrix.python }} public-template
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            python: '3.12'
+          - os: ubuntu-latest
+            python: '3.13'
+          - os: windows-latest
+            python: '3.12'
+          - os: windows-latest
+            python: '3.13'
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+      - name: Verify checked out commit
+        shell: bash
+        env:
+          EXPECTED_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+        run: |
+          actual_sha="$(git rev-parse HEAD)"
+          if [[ "$actual_sha" != "$EXPECTED_SHA" ]]; then
+            echo "Expected HEAD $EXPECTED_SHA, got $actual_sha" >&2
+            exit 1
+          fi
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install --require-hashes -r requirements.txt
+      - run: python -m unittest discover -s tests -v
+      - run: python src/weekly_report.py --sample-data sample_data --week 2026-05-04 2026-05-10
+      - run: python src/report_snapshot.py
+      - run: git diff --exit-code -- out docs/assets/weekly-report-snapshot.png
+      - run: python scripts/artifact_digest.py --artifact docs/assets/weekly-report-snapshot.png --output ci-artifact-digest-${{ matrix.os }}-${{ matrix.python }}.txt
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        with:
+          name: artifact-digest-${{ matrix.os }}-${{ matrix.python }}
+          path: ci-artifact-digest-${{ matrix.os }}-${{ matrix.python }}.txt
+          if-no-files-found: error
+
+  parity:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+        with:
+          pattern: artifact-digest-*
+          merge-multiple: true
+      - name: Verify cross-platform artifact digest
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          values = {path.name: path.read_text(encoding="ascii") for path in Path(".").glob("ci-artifact-digest-*.txt")}
+          if len(values) != 4:
+              raise SystemExit(f"Unexpected digest layout: {sorted(values)}")
+          if len(set(values.values())) != 1:
+              raise SystemExit("Cross-platform artifact digests differ")
+          value = next(iter(values.values()))
+          if len(value) != 65 or not value.endswith("\n") or any(c not in "0123456789abcdef\n" for c in value):
+              raise SystemExit("Invalid digest artifact")
+          PY
